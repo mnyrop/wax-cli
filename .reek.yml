@@ -1,0 +1,9 @@
+---
+detectors:
+  TooManyStatements:
+      max_statements: 6
+  IrresponsibleModule:
+    enabled: false
+  DuplicateMethodCall:
+    allow_calls:
+      - match

@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe WaxCli do
-  it "has a version number" do
-    expect(WaxCli::VERSION).not_to be nil
-  end
-
-  it "does something useful" do
-    expect(false).to eq(true)
+RSpec.describe Wax do
+  it 'has a version number' do
+    expect(Wax::VERSION).not_to be nil
   end
 end

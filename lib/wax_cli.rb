@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "wax_cli/version"
+require 'thor'
 
-module WaxCli
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require_relative 'wax/cli'
+require_relative 'wax/error'
+require_relative 'wax/version'
