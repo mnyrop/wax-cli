@@ -16,3 +16,8 @@ jobs:
           bundler-cache: true
       - name: test
         run: bundle exec rake
+      - name: demo
+        run: |
+          bundle exec wax --version
+          bundle exec wax --help
+          bundle exec wax build collection --help
