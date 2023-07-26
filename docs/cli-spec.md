@@ -117,8 +117,9 @@ collections:
             pages: 
             search:
     ```
-6. I run `bundle exec wax build collection my_collection` which will run * all * the specified build tasks and create/update the `.wax-cache` with information about what's been done to enable md5/diff-based partial rebuilds.
-7. Later, if I want to build a specific output for the collection (e.g., the pages), I can run the command with a flag, e.g.,
+6. I run `bundle exec wax lint my_collection` to check for any errors & warnings with my collection data & configuration. (e.g., missing id, invalid csv, unallowed column header/key, etc.)
+7. I run `bundle exec wax build collection my_collection` which will run *all* the build tasks specified in the collection `build` config (in this case `simple_images`, `iiif`, `pages` and `search`) for the jekyll site to use with and create/update the `.wax-cache` with information about what's been done to enable md5/diff-based partial rebuilds.
+8. Later, if I want to (re)build a specific output for the collection (e.g., the pages), I can run the command with a flag, e.g.,
     ```sh
     bundle exec wax build collection my_collection --pages
     ```
@@ -129,20 +130,20 @@ collections:
     see:
     ```sh
       bundle exec wax build collection --help
-      
+
       Usage:
         wax build collection NAME
 
       Options:
                   [--search], [--no-search]                # If true, builds a search index for the collection.
-                  [--reset], [--no-reset]                  # If true, clobbers the collection to reset before running.
+                  [--clobber], [--no-clobber]              # If true, clobbers the collection to reset before running.
                   [--iiif], [--no-iiif]                    # If true, builds IIIF resources.
                   [--pages], [--no-pages]                  # If true, builds markdown page for each item.
         --simple, [--simple-images], [--no-simple-images]  # If true, builds simple image derivatives.
 
       Build the wax collection named NAME
     ```
-8. I can build and serve my site with jekyll normally:
+9. I can then build and serve my site with jekyll normally:
     ``` sh
     bundle exec jekyll serve
     ```
