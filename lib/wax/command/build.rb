@@ -6,18 +6,19 @@ module Wax
   module Command
     class Build < Base
       class_option :iiif,           type: :boolean, desc: 'If true, builds IIIF resources.'
+      class_option :pages,          type: :boolean, desc: 'If true, builds markdown page for each item.'
       class_option :simple_images,  aliases: '--simple', type: :boolean,
                                     desc: 'If true, builds simple image derivatives.'
 
       desc 'collection NAME', 'Build the wax collection named NAME'
-      option :with_search, type: :boolean, desc: 'If true, builds a search index for the collection.'
+      option :search, type: :boolean, desc: 'If true, builds a search index for the collection.'
       option :reset, type: :boolean, default: false, desc: 'If true, clobbers the collection to reset before running.'
       def collection(name)
         puts "building the '#{name}' collection with options #{options}"
       end
 
       desc 'collections', 'Build all available wax collections'
-      option :with_search, type: :boolean, desc: 'If true, builds search indexes for each collection.'
+      option :search, type: :boolean, desc: 'If true, builds search indexes for each collection.'
       option :reset, type: :boolean, default: false,
                      desc: 'If true, clobbers the collections to reset before running.'
       def collections
