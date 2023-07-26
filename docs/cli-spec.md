@@ -1,5 +1,6 @@
+# wax_cli :: spec planning doc
 
-Commands
+## commands
 
 ```bash
   wax --version, -v  
@@ -11,26 +12,22 @@ Commands
     wax clobber collection NAME
     wax clobber collections
     wax clobber item COLLECTION_NAME ITEM_ID
-  wax index
-    wax index aggregate
-    wax index all
-    wax index collection NAME
-    wax index each
   wax lint
     wax lint collection NAME
     wax lint collections
 ```
 
-Config 
+## full config  
+*(with explicit/redundant defaults & optional values)*
 
 ```yaml
 collections:
   demo:
     output: true # needs to be true for jekyll to render pages to _site
     wax:
-      assets: 'assets' # REQUIRED(?) – path to folder of assets (images) relative to wax/<name>
-      records: 'records.csv' # REQUIRED - path to file of metadata records relative to wax/<name>
-      dictionary: 'dictionary.yml' # REQUIRED(?) – path to dictionary yaml file relative to wax/<name>
+      assets: '/wax/demo/assets' # REQUIRED(?) – path to folder of assets (images); default is `/wax/<collection-name>/assets`
+      records: '/wax/demo/records.csv' # REQUIRED - path to file of metadata records; default is `/wax/<collection-name>/records.csv`
+      dictionary: '/wax/demo/dictionary.yml' # REQUIRED(?) – path to dictionary yaml; default is `/wax/<collection-name>/dictionary.yml`
       build: # steps to run/invoke with `wax build`
         simple_images: # default is true if `simple_images` key exists
           variants: # default is banner: 1140 and thumb: 400
@@ -38,13 +35,114 @@ collections:
             thumb: 400
         iiif:
           enabled: true # default is true if `iiif` key exists
-          extract_existing: true # default is false
           scale_factors: [] # need to figure out default
-          exclude: [] # default metadata is from dictionary.yml, uses eveything by default
         pages: 
-          enabled: true # default is true
-          layout: item.html # item.html is default; that layout should exist in theme and use dictionary.yml
-        search: # default is true if `search` key exists
-          exclude: [] # default metadata is from dictionary.yml, uses eveything by default
-          index: '/search/demo-index.json'
+          enabled: true # default is true if `pages` key exists
+          layout: item.html # item.html is default; that layout should exist in the theme and use dictionary.yml to know what to show
+        search: 
+          enabled: true # default is true if `search` key exists
+          index: '/search/indexes/demo.json' # '/search/indexes/<collection_name>.json' is the default
 ```
+
+## simplest config
+*(still works! just using implicit defaults. "convention vs configuration" etc. etc.)*
+
+```yaml
+collections:
+  demo:
+    output: true
+    wax:
+      build:
+        simple_images:
+        iiif:
+        pages: 
+        search:
+```
+
+
+## user story
+1. I use `wax-kit` boilerplate repository template to make my own repo and clone it.
+2. I run `bundle install`, which pulls in `wax_theme` and `wax_cli` via remote ruby gems.
+3. I run `bundle exec wax clobber demo`
+4. I replace the demo collection data with my own `assets`, `records.csv`, and `dictionary.yml` that live in the `wax` folder within the project root:
+    ```sh 
+    .
+    ├── Gemfile
+    ├── README.md
+    ├── _config.yml
+    ├── _site
+    ├── src # the jekyll site source lives tidied here
+    └── wax # the un-processed wax input data lives here
+        └── demo
+            ├── assets
+            ├── dictionary.yml
+            └── records.csv
+    ```
+    ~~>
+    ```sh 
+    .
+    ├── .wax-cache
+    ├── Gemfile
+    ├── README.md
+    ├── _config.yml
+    ├── _site
+    ├── src 
+    └── wax 
+        └── my_collection # renamed!
+            ├── assets # replaced!
+            ├── dictionary.yml # replaced!
+            └── records.csv # replaced!
+    ```
+5. I update my repo's config to reference my new collection `my_collection`:
+    ```yaml
+    collections:
+      demo:
+        output: true
+        wax:
+          build:
+            simple_images:
+            iiif:
+            pages: 
+            search:
+    ```
+    ~~>
+    ```yaml
+    collections:
+      my_collection: # renamed! that's it!
+        output: true
+        wax:
+          build:
+            simple_images:
+            iiif:
+            pages: 
+            search:
+    ```
+6. I run `bundle exec wax build collection my_collection` which will run * all * the specified build tasks and create/update the `.wax-cache` with information about what's been done to enable md5/diff-based partial rebuilds.
+7. Later, if I want to build a specific output for the collection (e.g., the pages), I can run the command with a flag, e.g.,
+    ```sh
+    bundle exec wax build collection my_collection --pages
+    ```
+    or
+    ```
+    bundle exec wax build collection my_collection --search
+    ```
+    see:
+    ```sh
+      bundle exec wax build collection --help
+      
+      Usage:
+        wax build collection NAME
+
+      Options:
+                  [--search], [--no-search]                # If true, builds a search index for the collection.
+                  [--reset], [--no-reset]                  # If true, clobbers the collection to reset before running.
+                  [--iiif], [--no-iiif]                    # If true, builds IIIF resources.
+                  [--pages], [--no-pages]                  # If true, builds markdown page for each item.
+        --simple, [--simple-images], [--no-simple-images]  # If true, builds simple image derivatives.
+
+      Build the wax collection named NAME
+    ```
+8. I can build and serve my site with jekyll normally:
+    ``` sh
+    bundle exec jekyll serve
+    ```
