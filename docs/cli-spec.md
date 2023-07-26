@@ -1,5 +1,12 @@
 # wax_cli :: spec planning doc
 
+## contents
+
+- [commands](#commands)
+- [full config](#full-config)
+- [simplest config](#simplest-config)
+- [user story](#user-story)
+
 ## commands
 
 ```bash
