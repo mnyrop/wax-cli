@@ -41,18 +41,15 @@ collections:
       records: '/wax/demo/records.csv' # REQUIRED - path to file of metadata records; default is `/wax/<collection-name>/records.csv`
       dictionary: '/wax/demo/dictionary.yml' # OPTIONAL(?) – path to dictionary yaml file; default is to *look for* `/wax/<collection-name>/dictionary.yml` but not require it
       build: # steps to run/invoke with `wax build`
-        simple_images: # default is true if `simple_images` key exists
+        simple_images: 
           variants: # default is banner: 1140 and thumb: 400
             banner: 1140
             thumb: 400
         iiif:
-          enabled: true # default is true if `iiif` key exists
           scale_factors: [] # need to figure out default
         pages: 
-          enabled: true # default is true if `pages` key exists
           layout: item.html # item.html is default; that layout should exist in the theme and use dictionary.yml to know what to show
         search: 
-          enabled: true # default is true if `search` key exists
           index: '/search/indexes/demo.json' # '/search/indexes/<collection_name>.json' is the default
 ```
 
