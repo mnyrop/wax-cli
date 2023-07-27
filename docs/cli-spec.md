@@ -3,8 +3,11 @@
 ## contents
 
 - [commands](#commands)
-- [full config](#full-config)
-- [simplest config](#simplest-config)
+- [site config](#site-config)
+  - [fullest sample config](#fullest-sample-config)
+  - [simplest sample config](#simplest-sample-config)
+- [collection dictionary](#collection-dictionary)
+  - [sample dictionary file](#sample-dictionary-file)
 - [user story](#user-story)
 
 ## commands
@@ -24,7 +27,9 @@
     wax lint collections
 ```
 
-## full config  
+## site config  
+
+### fullest sample config
 *(with explicit/redundant defaults & optional values)*
 
 ```yaml
@@ -51,7 +56,7 @@ collections:
           index: '/search/indexes/demo.json' # '/search/indexes/<collection_name>.json' is the default
 ```
 
-## simplest config
+### simplest sample config
 *(still works! just using implicit defaults. "convention vs configuration" etc. etc.)*
 
 ```yaml
@@ -65,7 +70,35 @@ collections:
         pages: 
         search:
 ```
+## collection dictionary
 
+A collection `dictionary.yml` file is OPTIONAL.
+
+By default, all values will appear in each output with a label that is the same as the `key`. E.g, if a csv column header is `_date` that's how it'll be labeled on a page or in a IIIF manifest.
+
+If a `dictionary.yml` file *is* specified for the collection, the configuration in `metadata` will be added to the record parsing process.
+
+Keys not configured in a `dictionary.yml` file will *still* get built with the key value used as the label. Keys need to be explicitly *excluded* from the outputs—in other words, wax-v2 treats metadata as *opt-out* whereas wax-v1 treats it as *opt-in*.
+
+### sample dictionary file
+
+e.g., `wax/demo/dictionary.yml`
+``` yml
+metadata:
+  - label: 'Item ID'
+    key: 'pid'
+  - label: 'Label'
+    key: 'label'
+  - label: 'Tags'
+    key: 'tags'
+    array_split: ';' # only needed if records are in CSV original format (as opposed to JSON, which can natively handle arrays and nested hashes)
+  - key: 'is_digitized'
+    exclude_from:
+      all: true # makes ones below redundant, but just to show options
+      # pages: true
+      # iiif: true
+      # search: true
+```
 
 ## user story
 1. I use `wax-kit` boilerplate repository template to make my own repo and clone it.
