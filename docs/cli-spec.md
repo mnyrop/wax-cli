@@ -14,7 +14,7 @@
 
 ```bash
   wax --version, -v  
-  wax build
+  wax build               # see user story below for description of behavior
     wax build collection NAME
     wax build collections
     wax build item COLLECTION_NAME ITEM_ID
@@ -25,6 +25,7 @@
   wax lint
     wax lint collection NAME
     wax lint collections
+  wax init                   # speculative!! create a barest-bones cookie cutter wax scaffold with jekyll components but no styles? see: pbinkey's waxify
 ```
 
 ## site config  
