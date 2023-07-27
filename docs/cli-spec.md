@@ -25,7 +25,6 @@
   wax lint
     wax lint collection NAME
     wax lint collections
-  wax init                   # speculative!! create a barest-bones cookie cutter wax scaffold with jekyll components but no styles? see: pbinkey's waxify
 ```
 
 ## site config  
