@@ -39,7 +39,7 @@ collections:
     wax:
       assets: '/wax/demo/assets' # REQUIRED(?) – path to folder of assets (images); default is `/wax/<collection-name>/assets`
       records: '/wax/demo/records.csv' # REQUIRED - path to file of metadata records; default is `/wax/<collection-name>/records.csv`
-      dictionary: '/wax/demo/dictionary.yml' # REQUIRED(?) – path to dictionary yaml; default is `/wax/<collection-name>/dictionary.yml`
+      dictionary: '/wax/demo/dictionary.yml' # OPTIONAL(?) – path to dictionary yaml file; default is to *look for* `/wax/<collection-name>/dictionary.yml` but not require it
       build: # steps to run/invoke with `wax build`
         simple_images: # default is true if `simple_images` key exists
           variants: # default is banner: 1140 and thumb: 400
