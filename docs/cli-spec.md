@@ -43,8 +43,8 @@ collections:
       build: # steps to run/invoke with `wax build`
         simple_images: 
           variants: # default is banner: 1140 and thumb: 400
-            banner: 1140
-            thumb: 400
+            - banner: 1140
+            - thumb: 400
         iiif:
           scale_factors: [] # need to figure out default
         pages: 
