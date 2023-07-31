@@ -2,6 +2,7 @@
 
 require_relative 'command/build'
 require_relative 'command/clobber'
+require_relative 'command/inspect'
 require_relative 'command/lint'
 
 module Wax
@@ -17,6 +18,9 @@ module Wax
 
     desc 'clobber SUBCOMMANDS', 'List the clobber subcommands'
     subcommand 'clobber', Wax::Command::Clobber
+
+    desc 'inspect SUBCOMMANDS', 'List the inspect subcommands'
+    subcommand 'inspect', Wax::Command::Inspect
 
     desc 'lint SUBCOMMANDS', 'List the lint subcommands'
     subcommand 'lint', Wax::Command::Lint
