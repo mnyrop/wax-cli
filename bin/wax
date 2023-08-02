@@ -1,6 +1,15 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+ENV['WORKING_DIR'] = Dir.pwd
+
 require 'wax_cli'
 
-Wax::CLI.start
+begin
+  Wax::CLI.start
+rescue Wax::Error => e
+  trace = ENV['DEBUG'] ? e.backtrace : e.backtrace.take(5)
+  puts ''
+  puts trace.join("\n")
+  exit(1)
+end

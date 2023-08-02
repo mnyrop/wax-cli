@@ -3,7 +3,7 @@
 require_relative 'base'
 
 module Wax
-  module Command
+  module Commands
     class Clobber < Base
       desc 'collection NAME', 'Clobber the wax collection named NAME'
       def collection(name)

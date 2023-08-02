@@ -3,7 +3,7 @@
 require_relative 'base'
 
 module Wax
-  module Command
+  module Commands
     class Lint < Base
       desc 'collection NAME', 'Lint the wax collection named NAME'
       def collection(name)

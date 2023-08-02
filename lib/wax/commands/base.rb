@@ -3,7 +3,7 @@
 require 'thor'
 
 module Wax
-  module Command
+  module Commands
     class Base < Thor
       def self.subcommand_prefix
         str = name.gsub(/.*::/, '')

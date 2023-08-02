@@ -2,14 +2,13 @@
 
 require 'thor'
 
-require_relative 'command/build'
-require_relative 'command/clobber'
-require_relative 'command/inspect'
-require_relative 'command/lint'
+require_relative 'commands/build'
+require_relative 'commands/clobber'
+require_relative 'commands/lint'
 
 module Wax
   class CLI < Thor
-    def self.exit_on_failure? = true
+    def self.exit_on_failure? = false
 
     map %w[--version -v] => :__print_version
     desc '--version, -v', 'Print the wax_cli version'
@@ -18,15 +17,12 @@ module Wax
     end
 
     desc 'build SUBCOMMANDS', 'List the build subcommands'
-    subcommand 'build', Wax::Command::Build
+    subcommand 'build', Wax::Commands::Build
 
     desc 'clobber SUBCOMMANDS', 'List the clobber subcommands'
-    subcommand 'clobber', Wax::Command::Clobber
-
-    desc 'inspect SUBCOMMANDS', 'List the inspect subcommands'
-    subcommand 'inspect', Wax::Command::Inspect
+    subcommand 'clobber', Wax::Commands::Clobber
 
     desc 'lint SUBCOMMANDS', 'List the lint subcommands'
-    subcommand 'lint', Wax::Command::Lint
+    subcommand 'lint', Wax::Commands::Lint
   end
 end
