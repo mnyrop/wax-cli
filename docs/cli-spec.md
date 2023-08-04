@@ -36,9 +36,9 @@
 collections:
   demo:
     output: true # needs to be true for jekyll to render pages to _site
-    assets: 'collections/demo/assets' # path to folder of assets (images) relative to `_data` dir; default is `_data/collections/<collection-name>/assets`
-    records: 'collections/demo/records.csv' # path to file of metadata records relative to `_data` dir; default is `_data/collections/<collection-name>/records.csv`
-    dictionary: 'collections/demo/dictionary.yml' # path to dictionary yaml file relative to `_data` dir; default is `_data/collections/<collection-name>/dictionary.yml`
+    assets: 'collections/demo/assets' # path to folder of assets (images) relative to `_data` dir; default is `collections/<collection-name>/assets`
+    records: 'collections/demo/records.csv' # path to file of metadata records relative to `_data` dir; default is `collections/<collection-name>/records.csv`
+    dictionary: 'collections/demo/dictionary.yml' # path to dictionary yaml file relative to `_data` dir; default is `collections/<collection-name>/dictionary.yml`
     build: # steps to run/invoke with `wax build`
       simple_images: 
         variants: # default is banner: 1140 and thumb: 400
