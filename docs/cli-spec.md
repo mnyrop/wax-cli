@@ -36,21 +36,20 @@
 collections:
   demo:
     output: true # needs to be true for jekyll to render pages to _site
-    wax:
-      assets: '/wax/demo/assets' # REQUIRED(?) – path to folder of assets (images); default is `/wax/<collection-name>/assets`
-      records: '/wax/demo/records.csv' # REQUIRED - path to file of metadata records; default is `/wax/<collection-name>/records.csv`
-      dictionary: '/wax/demo/dictionary.yml' # OPTIONAL(?) – path to dictionary yaml file; default is to *look for* `/wax/<collection-name>/dictionary.yml` but not require it
-      build: # steps to run/invoke with `wax build`
-        simple_images: 
-          variants: # default is banner: 1140 and thumb: 400
-            - banner: 1140
-            - thumb: 400
-        iiif:
-          scale_factors: [] # need to figure out default
-        pages: 
-          layout: item.html # item.html is default; that layout should exist in the theme and use dictionary.yml to know what to show
-        search: 
-          index: '/search/indexes/demo.json' # '/search/indexes/<collection_name>.json' is the default
+    assets: 'collections/demo/assets' # path to folder of assets (images) relative to `_data` dir; default is `_data/collections/<collection-name>/assets`
+    records: 'collections/demo/records.csv' # path to file of metadata records relative to `_data` dir; default is `_data/collections/<collection-name>/records.csv`
+    dictionary: 'collections/demo/dictionary.yml' # path to dictionary yaml file relative to `_data` dir; default is `_data/collections/<collection-name>/dictionary.yml`
+    build: # steps to run/invoke with `wax build`
+      simple_images: 
+        variants: # default is banner: 1140 and thumb: 400
+          - banner: 1140
+          - thumb: 400
+      iiif:
+        scale_factors: [] # need to figure out default
+      pages: 
+        layout: item.html # item.html is default; that layout should exist in the theme and use dictionary.yml to know what to show
+      search: 
+        index: '/search/indexes/demo.json' # '/search/indexes/<collection_name>.json' is the default
 ```
 
 ### simplest sample config
@@ -60,12 +59,11 @@ collections:
 collections:
   demo:
     output: true
-    wax:
-      build:
-        simple_images:
-        iiif:
-        pages: 
-        search:
+    build:
+      simple_images:
+      iiif:
+      pages: 
+      search:
 ```
 ## collection dictionary
 
@@ -79,7 +77,7 @@ Keys not configured in a `dictionary.yml` file will *still* get built with the k
 
 ### sample dictionary file
 
-e.g., `wax/demo/dictionary.yml`
+e.g., `collections/demo/dictionary.yml`
 ``` yml
 metadata:
   - label: 'Item ID'
@@ -108,12 +106,12 @@ metadata:
     ├── README.md
     ├── _config.yml
     ├── _site
-    ├── src # the jekyll site source lives tidied here
-    └── wax # the un-processed wax input data lives here
-        └── demo
-            ├── assets
-            ├── dictionary.yml
-            └── records.csv
+    └── source # the jekyll site source lives tidied here
+        └── _data # the un-processed wax input data lives here
+            └── demo
+                ├── assets
+                ├── dictionary.yml
+                └── records.csv
     ```
     ~~>
     ```sh 
@@ -123,36 +121,34 @@ metadata:
     ├── README.md
     ├── _config.yml
     ├── _site
-    ├── src 
-    └── wax 
-        └── my_collection # renamed!
-            ├── assets # replaced!
-            ├── dictionary.yml # replaced!
-            └── records.csv # replaced!
+    └── source # the jekyll site source lives tidied here
+        └── _data
+            └── my_collection # renamed!
+                ├── assets # replaced!
+                ├── dictionary.yml # replaced!
+                └── records.csv # replaced!
     ```
 5. I update my repo's config to reference my new collection `my_collection`:
     ```yaml
     collections:
       demo:
         output: true
-        wax:
-          build:
-            simple_images:
-            iiif:
-            pages: 
-            search:
+        build:
+          simple_images:
+          iiif:
+          pages: 
+          search:
     ```
     ~~>
     ```yaml
     collections:
       my_collection: # renamed! that's it!
         output: true
-        wax:
-          build:
-            simple_images:
-            iiif:
-            pages: 
-            search:
+        build:
+          simple_images:
+          iiif:
+          pages: 
+          search:
     ```
 6. I run `bundle exec wax lint my_collection` to check for any errors & warnings with my collection data & configuration. (e.g., missing id, invalid csv, unallowed column header/key, etc.)
 7. I run `bundle exec wax build collection my_collection` which will run *all* the build tasks specified in the collection `build` config (in this case `simple_images`, `iiif`, `pages` and `search`) for the jekyll site to use.  It will also create/update the `.wax-cache` with information about what's been done to enable md5/diff-based partial rebuilds.
@@ -164,6 +160,7 @@ metadata:
     ```
     bundle exec wax build collection my_collection --search
     ```
+    which will build only that output type
     see:
     ```sh
       bundle exec wax build collection --help
@@ -173,10 +170,9 @@ metadata:
 
       Options:
                   [--search], [--no-search]                # If true, builds a search index for the collection.
-                  [--clobber], [--no-clobber]              # If true, clobbers the collection to reset before running.
                   [--iiif], [--no-iiif]                    # If true, builds IIIF resources.
                   [--pages], [--no-pages]                  # If true, builds markdown page for each item.
-        --simple, [--simple-images], [--no-simple-images]  # If true, builds simple image derivatives.
+                  [--simple-images], [--no-simple-images]  # If true, builds simple image derivatives.
 
       Build the wax collection named NAME
     ```
