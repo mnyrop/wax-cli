@@ -22,7 +22,7 @@
     wax clobber collection NAME
     wax clobber collections
     wax clobber item COLLECTION_NAME ITEM_ID
-  wax lint
+  wax lint # is wax validate better ???
     wax lint collection NAME
     wax lint collections
 ```
