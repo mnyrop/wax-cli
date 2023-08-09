@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 module Wax
-  module Buildable
+  module BuildStrategies
+    def build_strategies
+      @build_strategies ||= infer_build_strategies
+    end
+
     def infer_build_strategies
-      build = config.fetch 'build', {}
+      build = @opts.fetch 'build', {}
       Wax::Validate.build_strategies build.keys
     end
 

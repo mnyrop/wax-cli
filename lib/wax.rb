@@ -9,8 +9,6 @@ require_relative 'wax/project'
 require_relative 'wax/utils'
 require_relative 'wax/version'
 
-require_relative 'wax/loaders/records_loader'
-
 module Wax
   module Validate
     VALID_BUILD_STRATEGIES = %w[simple_images iiif pages].freeze

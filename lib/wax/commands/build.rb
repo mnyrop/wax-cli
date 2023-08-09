@@ -12,12 +12,15 @@ module Wax
 
       desc 'collection NAME', 'Build the wax collection named NAME'
       def collection(name)
-        project     = Wax::Project.new options['config']
-        collection  = project.load_collection name
-        build_opts  = Wax::Validate.build_strategies options.keys
+        build_opts = Wax::Validate.build_strategies options.keys
+        project    = Wax::Project.new options['config']
+        collection = project.find_collection name
+
+        raise Wax::CollectionError, "No collection found with name '#{name}'. Check your config?" unless collection.is_a? Wax::Collection
 
         collection.reset_build_strategies build_opts if build_opts.any?
-        collection.build_all
+
+        puts collection.build_strategies
       end
 
       desc 'collections', 'Build all available wax collections'

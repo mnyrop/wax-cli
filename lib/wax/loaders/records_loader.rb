@@ -1,75 +1,49 @@
 # frozen_string_literal: true
 
-require 'ostruct'
-
 module Wax
-  class RecordsLoader
-    attr_reader :collection
-
-    Record = OpenStruct
-
-    def initialize(collection)
-      @collection = collection
-      @file       = collection.records_file
-      @records    = records
+  module RecordsLoader
+    def self.load(file, dictionary)
+      path    = Utils.absolute_path(file)
+      records = File.file?(path) ? Utils.read_records_file(path) : []
+      validate_pids(apply_transformations(records, dictionary))
     end
 
-    # find records file && assert file exists
-    # check if file has changed since last read
-    # if not:
-    #    use existing collection.data.records in memory if exists
-    #    read in wax.json file as array of hashes and map to Record objects
-    # if so:
-    #    read in the records file w/ error handling for type as array of hashes
-    #    map to Record objects
-    def records
-      hashes = validate_hashes read_file(@file)
-      # hashes = dictionary.transform(hashes) if dictionary?
-      hashes.map { |hash| Record.new hash }
+    def self.apply_transformations(records, dictionary)
+      split_array_fields(records, dictionary)
     end
 
-    def read_file(file)
-      path = Wax::Utils.absolute_path file
-      raise Wax::FileNotFoundError unless File.file? path
+    def self.validate_pids(records)
+      assert_unique_pids(assert_pid_value(records))
+    end
 
-      case File.extname path
-      when '.csv'
-        Wax::Utils.read_csv path
-      when '.json'
-        Wax::Utils.read_json path
-      when /\.ya?ml/
-        Wax::Utils.read_yaml path
-      else
-        raise Wax::InvalidFileError, ''
+    def self.assert_pid_value(records)
+      no_pids = records.find_all  { |record| record['pid'].to_s.empty? }
+      raise Wax::CollectionError, "One or more records in #{config.records_file} are missing a 'pid' field. Add required pids and rerun.", "Culprits: #{no_pids}" if no_pids.any?
+
+      records
+    end
+
+    def self.assert_unique_pids(records)
+      pids        = records.map       { |record| record['pid'] }.compact
+      duplicates  = pids.find_all     { |pid| pids.count(pid) > 1 }.uniq
+      raise Wax::CollectionError, "One or more records in #{config.records_file} have a duplicate 'pid' field. Ensure pids are unique and rerun.", "Culprits: #{duplicates}" if duplicates.any?
+
+      records
+    end
+
+    # :reek:NestedIterators { max_allowed_nesting: 2 }
+    def self.split_array_fields(records, dictionary)
+      array_fields = dictionary.find_all { |_key, value| value.key? 'array_split' }
+      return records unless array_fields.any?
+
+      records.map do |record|
+        array_fields.each do |key, value|
+          next unless record.key? key
+
+          record[key] = record[key].split(value['array_split'].strip)
+        end
+        record
       end
-    end
-
-    def validate_hashes(raw)
-      # assert array of hashes
-      # assert unique pids
-      # assert no banned fields (e.g., _date, id)
-      raw
-    end
-
-    # looks for collection.data.dictionary if exists in memory
-    # tries to load from dictionary file
-    # validates dictionary
-    # null
-    # This method smells of :reek:DuplicateMethodCall
-    def dictionary
-      return collection.data.dictionary if collection.data.dictionary.is_a? Hash
-
-      file = Wax::Utils.absolute_path collection.records_file
-      return nil unless File.file? file
-
-      dict = Wax::Utils.read_yaml file
-      collection.data.dictionary = dict
-      dict
-    end
-
-    # clearer bool of dictionary valid existence
-    def dictionary?
-      !!dictionary
     end
   end
 end

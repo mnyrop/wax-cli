@@ -79,20 +79,15 @@ Keys not configured in a `dictionary.yml` file will *still* get built with the k
 
 e.g., `collections/demo/dictionary.yml`
 ``` yml
-metadata:
-  - label: 'Item ID'
-    key: 'pid'
-  - label: 'Label'
-    key: 'label'
-  - label: 'Tags'
-    key: 'tags'
-    array_split: ';' # only needed if records are in CSV original format (as opposed to JSON, which can natively handle arrays and nested hashes)
-  - key: 'is_digitized'
-    exclude_from:
-      all: true # makes ones below redundant, but just to show options
-      # pages: true
-      # iiif: true
-      # search: true
+pid:
+  label: 'Item ID'
+label:
+  label: 'Label'
+tags:
+  label: 'Tags'
+  array_split: ';' # only needed if records are in CSV original format (as opposed to JSON, which can natively handle arrays and nested hashes)
+is_digitized:
+  exclude: true # keep field out of resulting derivatives (e.g., pages, iiif manifest)
 ```
 
 ## user story

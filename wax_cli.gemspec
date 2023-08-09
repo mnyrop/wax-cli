@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.executables = ['wax']
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'dry-configurable'
   spec.add_dependency 'jekyll', '~> 4.3'
   spec.add_dependency 'rainbow', '~> 3.1'
   spec.add_dependency 'thor', '~> 1.2'

@@ -14,7 +14,10 @@ Layout/LineLength:
   AllowedPatterns:
     - !ruby/regexp /\A#/
     - 'raise '
+    - 'warn '
 Style/OpenStructUse:
   Enabled: false
 Metrics/MethodLength:
   Max: 12
+Metrics/AbcSize:
+  Max: 22

@@ -1,50 +1,45 @@
 # frozen_string_literal: true
 
-require_relative 'configurable'
+require 'dry-configurable'
 
 module Wax
   class Project
-    include Configurable
+    include Dry::Configurable
 
-    attr_reader :wax_config, :collections
+    attr_reader :collections
 
-    def initialize(config)
-      @custom       = load config
-      @wax_config   = waxed_config
-      @collections  = []
+    setting :url,             reader: true
+    setting :source,          reader: true
+    setting :data_dir,        reader: true
+    setting :collections_dir, reader: true
+    setting :search_dir,      reader: true
+    setting :derivatives_dir, reader: true
+
+    def initialize(opts = {})
+      @opts        = Utils.read_hash(opts).to_h
+      @collections = []
+
+      load_configuration
+      load_collections
     end
 
-    def waxed_config
-      conf = default_config.dup.merge @custom.dup
-      %w[collections_dir data_dir search_dir].each do |key|
-        conf[key] = File.join conf['source'], conf[key]
-      end
-      conf['url'] = File.join conf['url'], conf['baseurl']
-      conf.delete 'baseurl'
-      conf
+    # rubocop:disable Metrics/AbcSize
+    def load_configuration
+      config.url              = Utils.safe_join @opts.fetch('url', ''), @opts.fetch('baseurl', '')
+      config.source           = @opts.fetch 'source', ''
+      config.data_dir         = Utils.safe_join config.source, @opts.fetch('data_dir', '_data')
+      config.collections_dir  = Utils.safe_join config.source, @opts.fetch('collections_dir', '')
+      config.search_dir       = Utils.safe_join config.source, @opts.fetch('search_dir', 'wax/search')
+      config.derivatives_dir  = Utils.safe_join config.source, @opts.fetch('derivatives_dir', 'wax/derivatives')
+    end
+    # rubocop:enable Metrics/AbcSize
+
+    def load_collections
+      @collections = @opts.fetch('collections')&.map { |name, opts| Collection.new name, opts, config }
     end
 
-    def default_config
-      {
-        'url' => '',
-        'baseurl' => '',
-        'source' => '',
-        'collections_dir' => '',
-        'data_dir' => '_data',
-        'search_dir' => 'search',
-        'collections' => {}
-      }
-    end
-
-    def load_collection(name)
-      if collections.empty?
-        collection = Collection.new name, @wax_config
-        collections << collection
-        collection
-      else
-        puts 'looking in .collections'
-        # look for a collection in @collections with the right name
-      end
+    def find_collection(name)
+      @collections.find { |collection| collection.name == name }
     end
   end
 end
