@@ -13,7 +13,7 @@ module Wax
     include BuildStrategies
     include Dry::Configurable
 
-    attr_reader :name
+    attr_reader :name, :build_strategies
 
     setting :data_dir,        reader: true
     setting :records_file,    reader: true
@@ -26,6 +26,7 @@ module Wax
       @name             = name
       @opts             = opts
       @project          = project
+      @build_strategies = infer_build_strategies
 
       load_configuration
     end
@@ -57,11 +58,21 @@ module Wax
       @items ||= Wax::ItemsLoader.load records, assets
     end
 
-    def load_data
-      dictionary
-      records
-      assets
-      items
+    # def load_data
+    #   dictionary
+    #   records
+    #   assets
+    #   items
+    # end
+
+    def build(list = build_strategies)
+      strategies = BuildStrategies.validate list
+      warn Rainbow("Warning!! Tried running #build on collection #{name} but no valid build strategies were provided.").orange, "Culprit: #{list}" and return unless strategies.any?
+
+      strategies.each do |strategy|
+        builder = Builder.new(strategy).factory
+        builder.build
+      end
     end
   end
 end

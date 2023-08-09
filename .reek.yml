@@ -4,6 +4,8 @@ detectors:
       max_statements: 8
   IrresponsibleModule: # Should be able to remove later!!!
     enabled: false
+  FeatureEnvy:
+    enabled: false
   DuplicateMethodCall:
     allow_calls:
       - match

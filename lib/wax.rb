@@ -2,6 +2,7 @@
 
 require 'rainbow'
 
+require_relative 'wax/builder'
 require_relative 'wax/cli'
 require_relative 'wax/collection'
 require_relative 'wax/error'
@@ -9,12 +10,4 @@ require_relative 'wax/project'
 require_relative 'wax/utils'
 require_relative 'wax/version'
 
-module Wax
-  module Validate
-    VALID_BUILD_STRATEGIES = %w[simple_images iiif pages].freeze
-
-    def self.build_strategies(list)
-      list.find_all { |key| VALID_BUILD_STRATEGIES.include? key }
-    end
-  end
-end
+module Wax; end

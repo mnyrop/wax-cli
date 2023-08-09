@@ -2,25 +2,36 @@
 
 module Wax
   module BuildStrategies
-    def build_strategies
-      @build_strategies ||= infer_build_strategies
+    def self.valid
+      %w[simple_images iiif pages].freeze
+    end
+
+    def self.validate(list)
+      list.find_all { |key| BuildStrategies.valid.include? key }
+    end
+
+    def self.reorder(list)
+      list.sort_by! { |name| name == 'pages' ? 1 : 0 }
     end
 
     def infer_build_strategies
-      build = @opts.fetch 'build', {}
-      Wax::Validate.build_strategies build.keys
+      build = @opts['build']
+      return [] unless build.is_a? Hash
+
+      BuildStrategies.reorder(BuildStrategies.validate(build.keys))
     end
 
     def add_build_strategies(*args)
-      valid = Wax::Validate.build_strategies args.flatten
+      valid = BuildStrategies.validate args.flatten
       @build_strategies.concat valid
+      reorder_strategies!
     end
 
     def clear_build_strategies
       @build_strategies.clear
     end
 
-    def reset_build_strategies(*args)
+    def overwrite_build_strategies(*args)
       clear_build_strategies
       add_build_strategies args.flatten
     end
