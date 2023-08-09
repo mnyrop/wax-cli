@@ -21,6 +21,10 @@ module Wax
       File.join(*paths).reverse.chomp('/').reverse.chomp('/')
     end
 
+    def self.padded_int(idx, max_idx)
+      idx.to_s.rjust(Math.log10(max_idx).to_i + 1, '0')
+    end
+
     def self.read_records_file(file)
       raise Wax::FileNotFoundError unless File.file? file
 

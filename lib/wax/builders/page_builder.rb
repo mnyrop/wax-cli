@@ -2,7 +2,9 @@
 
 module Wax
   class PageBuilder
-    def build
+    attr_reader :items, :config
+
+    def build(_items, _config)
       puts 'Building pages!'
     end
   end

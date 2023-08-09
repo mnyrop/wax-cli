@@ -15,4 +15,5 @@ module Wax
   class ConfigError < Error; end
   class FileNotFoundError < Error; end
   class InvalidFileError < Error; end
+  class DependencyError < Error; end
 end

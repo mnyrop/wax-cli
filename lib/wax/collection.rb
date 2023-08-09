@@ -71,7 +71,7 @@ module Wax
 
       strategies.each do |strategy|
         builder = Builder.new(strategy).factory
-        builder.build
+        builder.build items, config
       end
     end
   end

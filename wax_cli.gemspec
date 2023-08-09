@@ -30,7 +30,10 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'dry-configurable'
   spec.add_dependency 'jekyll', '~> 4.3'
+  spec.add_dependency 'pdf-reader'
+  spec.add_dependency 'progress_bar'
   spec.add_dependency 'rainbow', '~> 3.1'
+  spec.add_dependency 'ruby-vips'
   spec.add_dependency 'thor', '~> 1.2'
 
   spec.metadata['rubygems_mfa_required'] = 'true'

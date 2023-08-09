@@ -1,7 +1,7 @@
 ---
 detectors:
   TooManyStatements:
-      max_statements: 8
+      max_statements: 13
   IrresponsibleModule: # Should be able to remove later!!!
     enabled: false
   FeatureEnvy:
@@ -10,3 +10,4 @@ detectors:
     allow_calls:
       - match
       - config
+      - bar
