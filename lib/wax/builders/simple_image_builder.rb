@@ -54,7 +54,7 @@ module Wax
 
     def default_variants
       {
-        'banner' => 1140,
+        'full_image' => 1140,
         'thumbnail' => 400
       }
     end

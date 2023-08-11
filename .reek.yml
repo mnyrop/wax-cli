@@ -1,7 +1,7 @@
 ---
 detectors:
   TooManyStatements:
-      max_statements: 13
+      max_statements: 10
   IrresponsibleModule: # Should be able to remove later!!!
     enabled: false
   FeatureEnvy:
@@ -13,10 +13,8 @@ detectors:
   BooleanParameter:
     enabled: false
   DuplicateMethodCall:
-    max_calls: 3
+    max_calls: 2
     allow_calls: [config]
-  Attribute: # Should fix
-    enabled: false
   InstanceVariableAssumption: # Should fix
     enabled: false
   NestedIterators:

@@ -4,7 +4,7 @@ require 'forwardable'
 
 module Wax
   class Item
-    attr_reader :pid, :label, :order, :metadata, :assets, :derivatives, :thumbnail, :banner
+    attr_reader :pid, :label, :order, :metadata, :assets, :derivatives, :thumbnail, :full_image
 
     def initialize(pid, opts)
       @pid          = pid
@@ -14,7 +14,7 @@ module Wax
       @assets       = opts.fetch 'assets',       {}
       @derivatives  = opts.fetch 'derivatives',  {}
       @thumbnail    = opts.fetch 'thumbnail',    ''
-      @banner       = opts.fetch 'banner',       ''
+      @full_image   = opts.fetch 'full_image', ''
     end
 
     def to_h
@@ -23,35 +23,36 @@ module Wax
         'label' => label,
         'order' => order,
         'thumbnail' => thumbnail,
-        'banner' => banner,
+        'full_image' => full_image,
+        'is_paged' => paged?,
         'metadata' => metadata,
         'assets' => assets,
         'derivatives' => derivatives
       }
     end
 
+    def paged?
+      derivatives.to_h.fetch('simple', {}).keys.size > 1
+    end
+
     def to_yaml
       compact_hash.to_yaml
     end
 
-    def to_page_yaml
-      "#{compact_hash.except('assets').to_yaml}---\n"
-    end
-
     def compact_hash
-      to_h.compact.delete_if { |_k, value| value.empty? }
+      Utils.compact_hash to_h
     end
 
     def simple_derivatives=(derivatives)
       @derivatives.to_h['simple'] = derivatives
       @thumbnail = derivatives.first[1]['thumbnail']
-      @banner = derivatives.first[1]['banner']
+      @full_image = derivatives.first[1]['full_image']
     end
 
     def clear_simple_derivatives
       @derivatives.to_h.delete 'simple'
-      @thumbnail = nil
-      @banner    = nil
+      @thumbnail  = nil
+      @full_image = nil
     end
 
     def clear_assets

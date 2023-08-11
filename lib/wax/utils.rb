@@ -28,5 +28,9 @@ module Wax
 
       JSON.pretty_generate items.map(&:to_h)
     end
+
+    def self.compact_hash(hash)
+      hash.compact.delete_if { |_k, value| value.to_s.empty? }
+    end
   end
 end
