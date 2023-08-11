@@ -6,12 +6,13 @@ module Wax
   module Parsers
     module Items
       def self.parse(records, asset_map)
-        records.map do |record|
-          pid       = record.fetch('pid')
-          label     = record.fetch('label', 'pid')
-          metadata  = record.except('pid', 'label')
+        records.map.with_index do |record, index|
+          pid       = record.fetch 'pid'
+          label     = record.fetch 'label', 'pid'
+          order     = record.fetch 'order', Utils.padded_int(index, records.size)
+          metadata  = record.except 'pid', 'label', 'order'
           assets    = asset_map[pid] || {}
-          opts      = { 'label' => label, 'metadata' => metadata, 'assets' => assets }
+          opts      = { 'label' => label, 'order' => order, 'metadata' => metadata, 'assets' => assets }
 
           Wax::Item.new pid, opts
         end

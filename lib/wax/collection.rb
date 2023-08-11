@@ -11,6 +11,7 @@ module Wax
 
     attr_reader :name, :build_strategies
 
+    setting :source_dir,      reader: true
     setting :data_dir,        reader: true
     setting :records_file,    reader: true
     setting :assets_dir,      reader: true
@@ -31,6 +32,7 @@ module Wax
 
     # rubocop:disable Metrics/AbcSize
     def load_configuration
+      config.source_dir       = @project.source
       config.data_dir         = Utils::Path.safe_join @project.data_dir, 'collections', @name
       config.records_file     = Utils::Path.safe_join(config.data_dir, @opts.dig('data', 'records') || 'records.csv')
       config.assets_dir       = Utils::Path.safe_join(config.data_dir, @opts.dig('data', 'assets')  || 'assets')
@@ -74,14 +76,27 @@ module Wax
       end
     end
 
-    def clobber(list = build_strategies)
+    def clear_cached_items
+      puts Rainbow("Clobbering cached items in #{Utils::Path.working config.wax_json_file}").cyan
+      FileUtils.rm_f Utils::Path.absolute(config.wax_json_file)
+      @cached_items = nil
+      puts Rainbow("Done ✓\n").green
+    end
+
+    def clear_items
+      @items = nil
+    end
+
+    def clobber(list: build_strategies, force: false)
+      clear_cached_items and clear_items if force
       strategies = BuildStrategies.validate list
+
       warn Rainbow("Warning!! Tried running #clobber on collection #{name} but no valid build strategies were provided.").orange, "Culprit: #{list}" and return unless strategies.any?
 
       strategies.each do |strategy|
         opts    = strategy_opts strategy
         builder = Factory.new(strategy, config, opts).builder
-        builder.clobber items
+        builder.clobber items, force:
       end
     end
   end

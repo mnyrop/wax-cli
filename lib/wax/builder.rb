@@ -32,13 +32,11 @@ module Wax
       existing  = File.file?(file) ? Utils::Read.json(file) : {}
       merged    = existing.merge items_hash
       File.write file, JSON.pretty_generate(merged)
-      puts Rainbow('Done ✓').green
     end
 
     def overwrite_json
       file = Utils::Path.absolute collection_config.wax_json_file
       File.write file, items_json
-      puts Rainbow('Done ✓').green
     end
 
     def items_json
@@ -49,6 +47,12 @@ module Wax
       {}.tap do |hash|
         @items.map(&:compact_hash).each { |item| hash[item['pid']] = item }
       end
+    end
+
+    def prune_source(path)
+      source = collection_config.source_dir
+      path.gsub!(/\A#{Regexp.quote(source)}/, '') unless source.to_s.empty?
+      path
     end
   end
 end

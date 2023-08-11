@@ -36,24 +36,26 @@ module Wax
         write_derivatives item
       end
       update_json
+      puts Rainbow("Done ✓\n").green
       @items
     end
 
-    def clobber(items)
-      puts Rainbow('Clobbering simple image derivatives.').cyan
+    def clobber(items, force: false)
+      puts Rainbow("Clobbering simple image derivatives in #{Utils::Path.working config.derivatives_dir}").cyan
       @items = items.map do |item|
         item.clear_assets
         item.clear_simple_derivatives
         item
       end
-      update_json
+      update_json unless force
       FileUtils.rm_rf config.derivatives_dir
+      puts Rainbow("Done ✓\n").green
     end
 
     def default_variants
       {
         'banner' => 1140,
-        'thumb' => 400
+        'thumbnail' => 400
       }
     end
 
@@ -87,7 +89,7 @@ module Wax
       results = config.variants.map.to_h do |key, width|
         target = File.join dir, "#{key}.jpg"
         Utils::Image.new_variant(image, width).jpegsave target unless File.file? target
-        [key, target]
+        [key, prune_source(target)]
       end
       [num, results]
     end

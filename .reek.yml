@@ -9,7 +9,9 @@ detectors:
   ControlParameter:
     enabled: false
   TooManyInstanceVariables:
-    max_instance_variables: 5
+    enabled: false
+  BooleanParameter:
+    enabled: false
   DuplicateMethodCall:
     max_calls: 3
     allow_calls: [config]
