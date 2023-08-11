@@ -1,11 +1,19 @@
 # frozen_string_literal: true
 
-module Wax
-  class PageBuilder
-    attr_reader :items, :config
+require_relative '../builder'
 
-    def build(_items, _config)
+module Wax
+  class PageBuilder < Builder
+    def build(items)
+      @items = items
       puts 'Building pages!'
+      update_json
+      @items
+    end
+
+    def clobber(_items)
+      puts Rainbow('Clobbering pages.').cyan
+      update_json
     end
   end
 end

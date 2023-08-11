@@ -16,7 +16,7 @@ module Wax
     setting :derivatives_dir, reader: true
 
     def initialize(opts = {})
-      @opts        = Utils.read_hash(opts).to_h
+      @opts        = Utils::Read.hash(opts).to_h
       @collections = []
 
       load_configuration
@@ -25,12 +25,12 @@ module Wax
 
     # rubocop:disable Metrics/AbcSize
     def load_configuration
-      config.url              = Utils.safe_join @opts.fetch('url', ''), @opts.fetch('baseurl', '')
+      config.url              = Utils::Path.safe_join @opts.fetch('url', ''), @opts.fetch('baseurl', '')
       config.source           = @opts.fetch 'source', ''
-      config.data_dir         = Utils.safe_join config.source, @opts.fetch('data_dir', '_data')
-      config.collections_dir  = Utils.safe_join config.source, @opts.fetch('collections_dir', '')
-      config.search_dir       = Utils.safe_join config.source, @opts.fetch('search_dir', 'wax/search')
-      config.derivatives_dir  = Utils.safe_join config.source, @opts.fetch('derivatives_dir', 'wax/derivatives')
+      config.data_dir         = Utils::Path.safe_join config.source, @opts.fetch('data_dir', '_data')
+      config.collections_dir  = Utils::Path.safe_join config.source, @opts.fetch('collections_dir', '')
+      config.search_dir       = Utils::Path.safe_join config.source, @opts.fetch('search_dir', 'wax/search')
+      config.derivatives_dir  = Utils::Path.safe_join config.source, @opts.fetch('derivatives_dir', 'wax/derivatives')
     end
     # rubocop:enable Metrics/AbcSize
 

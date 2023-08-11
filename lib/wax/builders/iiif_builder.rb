@@ -1,11 +1,19 @@
 # frozen_string_literal: true
 
-module Wax
-  class IIIFBuilder
-    attr_reader :items, :config
+require_relative '../builder'
 
-    def build(_items, _config)
+module Wax
+  class IIIFBuilder < Builder
+    def build(items)
+      @items = items
       puts 'Building IIIF!'
+      update_json
+      @items
+    end
+
+    def clobber(_items)
+      puts Rainbow('Clobbering IIIF derivatives.').cyan
+      update_json
     end
   end
 end

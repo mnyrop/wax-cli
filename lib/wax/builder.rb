@@ -1,38 +1,54 @@
 # frozen_string_literal: true
 
 require_relative 'build_strategies'
-require_relative 'builders/iiif_builder'
-require_relative 'builders/page_builder'
-require_relative 'builders/simple_image_builder'
 
 module Wax
-  # factory only
+  # Abstract Class
   class Builder
-    def initialize(strategy)
-      @strategy = strategy
+    attr_reader :collection_config, :opts, :items
 
-      raise Wax::Error, "Builder was initialized with invalid strategy \"#{strategy}\". Must be one of #{BuildStrategies.valid}" unless valid?
-    end
+    def initialize(collection_config, opts = {})
+      @collection_config  = collection_config
+      @opts               = Hash.new opts
+      @items              = []
 
-    def valid?
-      BuildStrategies.valid.include? @strategy
-    end
-
-    def factory
-      case @strategy
-      when 'iiif'
-        Wax::IIIFBuilder.new
-      when 'simple_images'
-        Wax::SimpleImageBuilder.new
-      when 'pages'
-        Wax::PageBuilder.new
-      else
-        raise Wax::Error, "Builder was initialized with invalid strategy \"#{@strategy}\". Must be one of #{BuildStrategies.valid}"
-      end
+      load_configuration
+      validate
     end
 
     def build
       raise Wax::Error, 'Called method #build on abstract class Builder. Perhaps you meant to create a PageBuilder, IIIFBuilder, or SimpleImageBuilder?'
+    end
+
+    def clobber
+      raise Wax::Error, 'Called method #clobber on abstract class Builder. Perhaps you meant to create a PageBuilder, IIIFBuilder, or SimpleImageBuilder?'
+    end
+
+    def load_configuration; end
+    def validate; end
+
+    def update_json
+      file      = Utils::Path.absolute collection_config.wax_json_file
+      existing  = File.file?(file) ? Utils::Read.json(file) : {}
+      merged    = existing.merge items_hash
+      File.write file, JSON.pretty_generate(merged)
+      puts Rainbow('Done ✓').green
+    end
+
+    def overwrite_json
+      file = Utils::Path.absolute collection_config.wax_json_file
+      File.write file, items_json
+      puts Rainbow('Done ✓').green
+    end
+
+    def items_json
+      JSON.pretty_generate items_hash
+    end
+
+    def items_hash
+      {}.tap do |hash|
+        @items.map(&:compact_hash).each { |item| hash[item['pid']] = item }
+      end
     end
   end
 end

@@ -13,11 +13,12 @@ Style/OptionalArguments:
 Layout/LineLength:
   AllowedPatterns:
     - !ruby/regexp /\A#/
+    - 'config '
     - 'raise '
     - 'warn '
-Style/OpenStructUse:
-  Enabled: false
 Metrics/MethodLength:
   Max: 13
 Metrics/AbcSize:
   Max: 22
+Metrics/ParameterLists:
+  Max: 5

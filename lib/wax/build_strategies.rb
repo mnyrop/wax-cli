@@ -27,6 +27,12 @@ module Wax
       reorder_strategies!
     end
 
+    def strategy_opts(strategy)
+      return {} unless BuildStrategies.valid.include? strategy
+
+      @opts.dig('build', strategy)
+    end
+
     def clear_build_strategies
       @build_strategies.clear
     end

@@ -6,8 +6,16 @@ detectors:
     enabled: false
   FeatureEnvy:
     enabled: false
+  ControlParameter:
+    enabled: false
+  TooManyInstanceVariables:
+    max_instance_variables: 5
   DuplicateMethodCall:
-    allow_calls:
-      - match
-      - config
-      - bar
+    max_calls: 3
+    allow_calls: [config]
+  Attribute: # Should fix
+    enabled: false
+  InstanceVariableAssumption: # Should fix
+    enabled: false
+  NestedIterators:
+    ignore_iterators: [find, tap]
