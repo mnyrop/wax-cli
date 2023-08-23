@@ -29,7 +29,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'dry-configurable'
-  spec.add_dependency 'jekyll', '~> 4.3'
   spec.add_dependency 'parallel'
   spec.add_dependency 'pdf-reader'
   spec.add_dependency 'rainbow', '~> 3.1'

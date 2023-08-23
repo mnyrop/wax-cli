@@ -14,6 +14,11 @@ module Wax
         sleep(0.25)
         Rainbow("\t✗ ").magenta
       end
+
+      def self.meh
+        sleep(0.25)
+        Rainbow("\t~ ").tan
+      end
     end
   end
 end

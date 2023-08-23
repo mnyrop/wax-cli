@@ -1,39 +1,33 @@
-# WaxCli
+# wax_cli
+[![Test](https://github.com/mnyrop/wax_cli/actions/workflows/main.yml/badge.svg)](https://github.com/mnyrop/wax_cli/actions/workflows/main.yml) 
+[![License](https://img.shields.io/github/license/mnyrop/wax_cli.svg?color=c6a1e0)](LICENSE.txt)
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/wax_cli`. To experiment with that code, run `bin/console` for an interactive prompt.
+Gem-packaged CLI tool for building collection derivatives & data files for minicomp/wax sites. Heir apparent to [wax_tasks](https://github.com/minicomp/wax_tasks).
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+### Prerequisites
+- Git
+- Libvips
+- Ruby with Bundler
 
-Install the gem and add to the application's Gemfile by executing:
-
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
-
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+### Steps
+- Add `gem 'wax_cli'` to your project's `Gemfile`
+- Run `bundle install`
 
 ## Usage
-
-TODO: Write usage instructions here
+TO DO
 
 ## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+TO DO
 
 ## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/wax_cli. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/wax_cli/blob/master/CODE_OF_CONDUCT.md).
+TO DO
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT). Please refence the project's [LICENSE.txt file](LICENSE.txt) and cite this repository as appropriate for downstream use.
 
 ## Code of Conduct
 
-Everyone interacting in the WaxCli project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/wax_cli/blob/master/CODE_OF_CONDUCT.md).
+TO DO

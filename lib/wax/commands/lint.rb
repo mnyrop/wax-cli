@@ -9,6 +9,7 @@ module Wax
 
       desc 'collection NAME', 'Lint the wax collection named NAME'
       def collection(name)
+        Wax::Lint.config options['config']
         project    = Wax::Project.new options['config']
         collection = project.find_collection name
 
@@ -19,6 +20,7 @@ module Wax
 
       desc 'collections', 'Lint all available wax collections'
       def collections
+        Wax::Lint.config options['config']
         project = Wax::Project.new options['config']
         project.collections.each do |collection|
           Wax::Lint.collection collection

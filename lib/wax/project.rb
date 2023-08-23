@@ -35,7 +35,7 @@ module Wax
     # rubocop:enable Metrics/AbcSize
 
     def load_collections
-      @collections = @opts.fetch('collections')&.map { |name, opts| Collection.new name, opts, config }
+      @collections = @opts.fetch('collections', {}).map { |name, opts| Collection.new name, opts, config }
     end
 
     def find_collection(name)

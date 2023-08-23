@@ -2,6 +2,40 @@
 
 module Wax
   module Lint
+    def self.config(config)
+      issues = 0
+      puts Rainbow('Linting site config...').cyan
+      path = Utils::Path.absolute config
+      return unless check_file_exists(path, required: true)
+
+      config = Utils::Read.hash path
+      issues += 1 unless assert_hash config
+      issues += 1 unless assert_valid_url config
+      issues += 1 unless assert_config_key config, 'collections'
+
+      report_results issues
+    end
+
+    def self.assert_valid_url(config)
+      if config['url'].to_s.downcase.start_with? 'http'
+        print Utils::Print.checkmark, "Found site url set with http/s\n"
+        true
+      else
+        print Utils::Print.warning, Rainbow("Site url is unset or doesn't start with http/s. This might break things, including any IIIF resources.\n").magenta
+        false
+      end
+    end
+
+    def self.assert_config_key(config, key)
+      if config.key? key
+        print Utils::Print.checkmark, "Found '#{key}' in config\n"
+        true
+      else
+        print Utils::Print.warning, Rainbow("Didn't find '#{key}' key in config.\n").magenta
+        false
+      end
+    end
+
     def self.collection(collection)
       Wax::Lint.cached_items  collection
       Wax::Lint.dictionary    collection
@@ -23,7 +57,7 @@ module Wax
         true
       else
         print Utils::Print.warning, Rainbow("Didn't find file!! Expected it at #{wrkpath}\n").magenta if required
-        puts Rainbow("\t~ Didn't find file #{wrkpath}; Skipping!").tan unless required
+        print Utils::Print.meh, Rainbow("Didn't find file #{wrkpath}; Skipping!\n").tan unless required
         false
       end
     end
