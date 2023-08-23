@@ -16,6 +16,7 @@ Layout/LineLength:
     - 'config '
     - 'raise '
     - 'warn '
+    - '_option '
 Metrics/MethodLength:
   Max: 13
 Metrics/AbcSize:

@@ -24,7 +24,13 @@ module Wax
 
       desc 'collections', 'Build all available wax collections'
       def collections
-        puts "building all the collections with options #{options}"
+        build_opts = Wax::BuildStrategies.validate options.keys
+        project    = Wax::Project.new options['config']
+
+        project.collections.each do |collection|
+          collection.overwrite_build_strategies(build_opts) if build_opts.any?
+          collection.build
+        end
       end
 
       desc 'item COLLECTION_NAME ITEM_ID', 'Build the item with id ITEM_ID in wax collection named COLLECTION_NAME'

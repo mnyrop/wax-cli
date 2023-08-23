@@ -32,9 +32,11 @@ module Wax
     end
 
     def page_hash(item)
-      page_hash = item.to_h.except('assets')
+      page_hash = item.to_h
+      page_hash['metadata'].each { |key, value| page_hash[key] = value unless page_hash.key? key }
       page_hash['layout'] = config.layout if config.layout
-      Utils.compact_hash page_hash
+      page_hash['derivatives'] = page_hash.delete('derivatives')
+      Utils.compact_hash page_hash.except('assets', 'metadata')
     end
 
     def clobber(_items, _force)

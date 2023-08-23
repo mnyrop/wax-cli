@@ -9,9 +9,9 @@ module Wax
       class_option :iiif,           type: :boolean, desc: 'If true, clobbers IIIF resources.'
       class_option :pages,          type: :boolean, desc: 'If true, clobbers markdown page(s).'
       class_option :simple_images,  type: :boolean, desc: 'If true, clobbers simple image derivatives.'
+      class_option :force,          type: :boolean, default: false, desc: 'If true, resets wax.json file for the collection'
 
       desc 'collection NAME', 'Clobber the wax collection named NAME'
-      option :force, type: :boolean, default: false, desc: 'If true, resets wax.json file for the collection'
       def collection(name)
         build_opts = Wax::BuildStrategies.validate options.keys
         project    = Wax::Project.new options['config']
@@ -25,7 +25,10 @@ module Wax
 
       desc 'collections', 'Clobber all available wax collections'
       def collections
-        puts 'clobbering all the collections'
+        project = Wax::Project.new options['config']
+        project.collections.each do |collection|
+          collection.clobber force: options['force']
+        end
       end
 
       desc 'item COLLECTION_NAME ITEM_ID', 'Clobber the item with ITEM_ID within COLLECTION_NAME collection'

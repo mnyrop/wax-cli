@@ -26,7 +26,7 @@ module Wax
         hash.map do |_k, value|
           pid             = value.fetch('pid')
           record          = records.find { |rec| rec['pid'] == pid } || {}
-          value['assets'] = asset_map[pid] unless value.key? 'assets'
+          value['assets'] = asset_map[pid]
 
           value.merge! record
           Wax::Item.new pid, value
