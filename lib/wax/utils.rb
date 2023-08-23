@@ -7,6 +7,7 @@ require 'yaml'
 
 require_relative 'utils/image'
 require_relative 'utils/path'
+require_relative 'utils/print'
 require_relative 'utils/read'
 
 module Wax
@@ -31,6 +32,11 @@ module Wax
 
     def self.compact_hash(hash)
       hash.compact.delete_if { |_k, value| value.to_s.empty? }
+    end
+
+    def self.truncate(str, max)
+      string = str.to_s
+      string.length > max ? "#{string[0...max]}..." : string
     end
   end
 end

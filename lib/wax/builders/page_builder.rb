@@ -18,9 +18,11 @@ module Wax
 
     def build(items)
       @items = items
-      puts Rainbow('Building pages.').cyan
+      puts Rainbow('Building pages...').cyan
+      print Utils::Print.checkmark, "Loaded #{@items.size} items\n"
+      print Utils::Print.checkmark, "Writing to #{collection_config.pages_dir}\n"
       @items.each { |item| write_page item }
-      puts Rainbow("Done ✓\n").green
+      print Utils::Print.checkmark, Rainbow("Done!\n").green
       @items
     end
 
@@ -40,9 +42,10 @@ module Wax
     end
 
     def clobber(_items, _force)
-      puts Rainbow("Clobbering pages in #{Utils::Path.working config.page_dir}").cyan
+      puts Rainbow('Clobbering pages...').cyan
+      print Utils::Print.checkmark, "Clearing out #{Utils::Path.working config.page_dir}\n"
       FileUtils.rm_rf config.page_dir
-      puts Rainbow("Done ✓\n").green
+      print Utils::Print.checkmark, Rainbow("Done!\n").green
     end
   end
 end

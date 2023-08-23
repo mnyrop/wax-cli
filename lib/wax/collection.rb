@@ -77,10 +77,11 @@ module Wax
     end
 
     def clear_cached_items
-      puts Rainbow("Clobbering cached items in #{Utils::Path.working config.wax_json_file}").cyan
+      puts Rainbow('Clobbering wax-generated json...').cyan
+      print Utils::Print.checkmark, "Clearing out #{Utils::Path.working config.wax_json_file}\n"
       FileUtils.rm_f Utils::Path.absolute(config.wax_json_file)
       @cached_items = nil
-      puts Rainbow("Done ✓\n").green
+      print Utils::Print.checkmark, Rainbow("Done!\n").green
     end
 
     def clear_items

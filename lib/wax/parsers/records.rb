@@ -6,7 +6,12 @@ module Wax
       def self.parse(file, dictionary)
         path    = Utils::Path.absolute(file)
         records = File.file?(path) ? Utils::Read.records_file(path) : []
-        validate_pids(apply_transformations(records, dictionary))
+        records = apply_transformations(records, dictionary)
+
+        raise Wax::CollectionError, "One or more records in #{file} are missing a 'pid' field. Try linting, then add required pids and rerun." if Wax::Lint.missing_pids(records).any?
+        raise Wax::CollectionError, "One or more records in #{file} have a duplicate 'pid' field. Try linting, ensure pids are unique and rerun." if Wax::Lint.duplicate_pids(records).any?
+
+        records
       end
 
       def self.apply_transformations(records, dictionary)
@@ -21,28 +26,9 @@ module Wax
         end
       end
 
-      def self.validate_pids(records)
-        assert_unique_pids(assert_pid_value(records))
-      end
-
-      def self.assert_pid_value(records)
-        no_pids = records.find_all  { |record| record['pid'].to_s.empty? }
-        raise Wax::CollectionError, "One or more records in #{config.records_file} are missing a 'pid' field. Add required pids and rerun.", "Culprits: #{no_pids}" if no_pids.any?
-
-        records
-      end
-
-      def self.assert_unique_pids(records)
-        pids        = records.map       { |record| record['pid'] }.compact
-        duplicates  = pids.find_all     { |pid| pids.count(pid) > 1 }.uniq
-        raise Wax::CollectionError, "One or more records in #{config.records_file} have a duplicate 'pid' field. Ensure pids are unique and rerun.", "Culprits: #{duplicates}" if duplicates.any?
-
-        records
-      end
-
       # :reek:NestedIterators { max_allowed_nesting: 2 }
       def self.split_array_fields(records, dictionary)
-        array_fields = dictionary.find_all { |_key, value| value.key? 'array_split' }
+        array_fields = dictionary&.find_all { |_key, value| value.key? 'array_split' } || []
         return records unless array_fields.any?
 
         records.map do |record|

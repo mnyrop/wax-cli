@@ -11,15 +11,14 @@ Style/Documentation:
 Style/OptionalArguments:
   Enabled: false
 Layout/LineLength:
-  AllowedPatterns:
-    - !ruby/regexp /\A#/
-    - 'config '
-    - 'raise '
-    - 'warn '
-    - '_option '
+  AllowedPatterns: [!ruby/regexp /\A#/, 'Parallel', 'config ', 'raise ', 'warn ', '_option ']
 Metrics/MethodLength:
   Max: 13
+Metrics/ModuleLength: 
+  Max: 150
 Metrics/AbcSize:
-  Max: 22
+  Max: 25
 Metrics/ParameterLists:
   Max: 5
+Metrics/CyclomaticComplexity:
+  Max: 10

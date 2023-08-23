@@ -31,25 +31,28 @@ module Wax
       raise Wax::Error, 'Called .build(items) but was not provided an array of Wax::Item objects', "Culprit: #{items.inspect}" unless Utils.all_items? items
 
       GC.start
-      puts Rainbow("\nWriting image derivatives. This may take a minute.").cyan
-      @items = Parallel.map(items, progress: { format: '%e %B %c/%u %P% Complete' }) do |item|
+      puts Rainbow('Building image derivatives...').cyan
+      print Utils::Print.checkmark, "Loaded variants configuration #{config.variants}\n"
+      print Utils::Print.checkmark, "Writing to #{config.derivatives_dir}\n"
+      @items = Parallel.map(items, progress: { format: Rainbow("\t⏵ %e %B %c/%u %P% Complete").skyblue, length: 80 }) do |item|
         write_derivatives item
       end
-      update_json
-      puts Rainbow("Done ✓\n").green
+      update_wax_json
+      print Utils::Print.checkmark, Rainbow("Done!\n").green
       @items
     end
 
     def clobber(items, force: false)
-      puts Rainbow("Clobbering simple image derivatives in #{Utils::Path.working config.derivatives_dir}").cyan
+      puts Rainbow('Clobbering simple image derivatives...').cyan
       @items = items.map do |item|
         item.clear_assets
         item.clear_simple_derivatives
         item
       end
-      update_json unless force
+      update_wax_json unless force
+      print Utils::Print.checkmark, "Clearing out #{Utils::Path.working config.derivatives_dir}\n"
       FileUtils.rm_rf config.derivatives_dir
-      puts Rainbow("Done ✓\n").green
+      print Utils::Print.checkmark, Rainbow("Done!\n").green
     end
 
     def default_variants

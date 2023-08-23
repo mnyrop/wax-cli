@@ -27,14 +27,19 @@ module Wax
     def load_configuration; end
     def validate; end
 
-    def update_json
-      file      = Utils::Path.absolute collection_config.wax_json_file
-      existing  = File.file?(file) ? Utils::Read.json(file) : {}
-      merged    = existing.merge items_hash
-      File.write file, JSON.pretty_generate(merged)
+    def update_wax_json
+      merged = load_wax_json.merge items_hash
+      print Utils::Print.checkmark, "Updating #{collection_config.wax_json_file}\n"
+      File.write Utils::Path.absolute(collection_config.wax_json_file), JSON.pretty_generate(merged)
     end
 
-    def overwrite_json
+    def load_wax_json
+      file = Utils::Path.absolute collection_config.wax_json_file
+      File.file?(file) ? Utils::Read.json(file) : {}
+    end
+
+    def overwrite_wax_json
+      print Utils::Print.checkmark, "Overwriting #{collection_config.wax_json_file}\n"
       file = Utils::Path.absolute collection_config.wax_json_file
       File.write file, items_json
     end
