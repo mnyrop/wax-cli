@@ -33,6 +33,15 @@
 *(with explicit/redundant defaults & optional values)*
 
 ```yaml
+search:
+  site:
+    index: 'wax/search/site.json' # default if empty is 'wax/search/NAME.json' so 'wax/search/site.json' here
+    full_site: true
+  demo:
+    index: 'wax/search/demo.json'
+    collections:
+      - demo
+
 collections:
   demo:
     output: true # needs to be true for jekyll to render pages to _site
@@ -56,6 +65,12 @@ collections:
 *(still works! just using implicit defaults. "convention vs configuration" etc. etc.)*
 
 ```yaml
+search:
+  site:
+    full_site: true
+  demo:
+    collections: [demo]
+
 collections:
   demo:
     output: true
