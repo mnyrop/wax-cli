@@ -37,7 +37,7 @@ search:
   site:
     index: 'wax/search/site.json' # default if empty is 'wax/search/NAME.json' so 'wax/search/site.json' here
     full_site: true
-  demo:
+  demo: # this does the exact same thing as demo.build.search below! the search config here really makes sense for indexes that have multiple collection and/or full_site scope, but you could configure an index just for one collection (e.g. demo) up here too.
     index: 'wax/search/demo.json'
     collections:
       - demo
@@ -58,7 +58,7 @@ collections:
       pages: 
         layout: item.html # item.html is default; that layout should exist in the theme and use dictionary.yml to know what to show
       search: 
-        index: '/search/indexes/demo.json' # '/search/indexes/<collection_name>.json' is the default
+        index: '/wax/search/demo.json' # default if empty is 'wax/search/<collection-name>.json' so 'wax/search/demo.json' here
 ```
 
 ### simplest sample config
