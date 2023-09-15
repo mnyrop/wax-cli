@@ -14,15 +14,13 @@ builder.build data=items strategies=collection.build_strategies
 steps
 
 1. load _config.yml
-2. load collection-specific config
-3. check if .wax-cache for collection exists
-    - if not: initialize one
-4. check if wax.json exists
-    - if not: initialize one
-5. parse collection @items from config, records, assets, & dictionary opts
-6. for each item: # update cache
+2. load collection-specific config based on name
+3. check if wax.json exists
+    - if not: initialize one from config, records, assets, & dictionary opts
+4. parse collection @items from wax.json
+5. for each item: # state info
     - set bool item assets_have_changed?
-    - update wax-cache with new SHAs
+    - update wax-json with new SHAs as needed
 7. for each item: # simple images
    - if item assets_have_changed?
       + for each asset:
@@ -30,7 +28,7 @@ steps
         - remove ref from item.assets.simple_derivatives
     - see if expected target derivatives exist (via variants config)
       + if not: generate them and add info to item.assets.simple_derivatives
-    - write results to wax.json
+    - write updated results to wax.json
 8. for each item: # iiif
     - if item assets_have_changed?
       + for each asset:
@@ -41,4 +39,4 @@ steps
     - regenerage manifest.json
     - write results to wax.json
 9. for each item: # pages
-    - write markdown page with yaml front matter
+    - write markdown page with yaml front matter (don't bother checking if it's changed, it's not necessary for efficiency. just add new data)
