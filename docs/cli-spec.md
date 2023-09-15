@@ -50,9 +50,9 @@ collections:
     dictionary: 'collections/demo/dictionary.yml' # path to dictionary yaml file relative to `_data` dir; default is `collections/<collection-name>/dictionary.yml`
     build: # steps to run/invoke with `wax build`
       simple_images: 
-        variants: # default is banner: 1140 and thumb: 400
-          - banner: 1140
-          - thumb: 400
+        variants: # default is full_image: 1140 and thumbnail: 400
+          - full_image: 1140
+          - thumbnail: 400
       iiif:
         scale_factors: [] # need to figure out default
       pages: 
