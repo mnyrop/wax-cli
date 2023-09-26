@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'ruby-progressbar'
   spec.add_dependency 'ruby-vips'
   spec.add_dependency 'thor', '~> 1.2'
+  spec.add_dependency 'wax_iiif'
 
   spec.metadata['rubygems_mfa_required'] = 'true'
 end

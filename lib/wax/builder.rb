@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'build_strategies'
-
 module Wax
   # Abstract Class
   class Builder
@@ -55,9 +53,9 @@ module Wax
     end
 
     def prune_source(path)
-      source = collection_config.source_dir
-      path.gsub!(/\A#{Regexp.quote(source)}/, '') unless source.to_s.empty?
-      path
+      path    = Utils::Path.working path
+      source  = collection_config.source_dir
+      source.to_s.empty? ? path : path.gsub(/\A#{Regexp.quote(source)}/, '')
     end
   end
 end

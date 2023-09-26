@@ -11,6 +11,7 @@ module Wax
 
     attr_reader :name, :build_strategies
 
+    setting :name,            reader: true
     setting :source_dir,      reader: true
     setting :data_dir,        reader: true
     setting :records_file,    reader: true
@@ -20,6 +21,7 @@ module Wax
     setting :derivatives_dir, reader: true
     setting :pages_dir,       reader: true
     setting :build_opts,      reader: true
+    setting :site_url,        reader: true
 
     def initialize(name, opts, project)
       @name             = name
@@ -32,6 +34,7 @@ module Wax
 
     # rubocop:disable Metrics/AbcSize
     def load_configuration
+      config.name             = @name
       config.source_dir       = @project.source
       config.data_dir         = Utils::Path.safe_join @project.data_dir, 'collections', @name
       config.records_file     = Utils::Path.safe_join(config.data_dir, @opts.dig('data', 'records') || 'records.csv')
@@ -42,6 +45,7 @@ module Wax
       config.derivatives_dir  = Utils::Path.safe_join(@project.derivatives_dir, @name)
       config.pages_dir        = Utils::Path.safe_join(@project.collections_dir, "_#{@name}")
       config.build_opts       = @opts.fetch 'build', {}
+      config.site_url         = @project.url
     end
     # rubocop:enable Metrics/AbcSize
 

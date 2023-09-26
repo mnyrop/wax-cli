@@ -22,8 +22,8 @@ module Wax
         file = Utils::Path.absolute wax_json_file
         return unless File.file? file
 
-        hash = Utils::Read.json file
-        hash.map do |_k, value|
+        hash   = Utils::Read.json file
+        result = hash.map do |_k, value|
           pid             = value.fetch('pid')
           record          = records.find { |rec| rec['pid'] == pid } || {}
           value['assets'] = asset_map[pid]
@@ -31,6 +31,7 @@ module Wax
           value.merge! record
           Wax::Item.new pid, value
         end
+        result if result.any?
       end
     end
   end

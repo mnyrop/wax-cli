@@ -4,17 +4,18 @@ require 'forwardable'
 
 module Wax
   class Item
-    attr_reader :pid, :label, :order, :metadata, :assets, :derivatives, :thumbnail, :full_image
+    attr_reader :pid, :label, :order, :metadata, :assets, :derivatives, :thumbnail, :full_image, :iiif_manifest
 
     def initialize(pid, opts)
-      @pid          = pid
-      @label        = opts.fetch 'label',        pid
-      @order        = opts.fetch 'order',        ''
-      @metadata     = opts.fetch 'metadata',     {}
-      @assets       = opts.fetch 'assets',       {}
-      @derivatives  = opts.fetch 'derivatives',  {}
-      @thumbnail    = opts.fetch 'thumbnail',    ''
-      @full_image   = opts.fetch 'full_image', ''
+      @pid            = pid
+      @label          = opts.fetch 'label',         pid
+      @order          = opts.fetch 'order',         ''
+      @metadata       = opts.fetch 'metadata',      {}
+      @assets         = opts.fetch 'assets',        {}
+      @derivatives    = opts.fetch 'derivatives',   {}
+      @thumbnail      = opts.fetch 'thumbnail',     ''
+      @full_image     = opts.fetch 'full_image',    ''
+      @iiif_manifest  = ''
     end
 
     def to_h
@@ -27,7 +28,8 @@ module Wax
         'is_paged' => paged?,
         'metadata' => metadata,
         'assets' => assets,
-        'derivatives' => derivatives
+        'derivatives' => derivatives,
+        'iiif_manifest' => iiif_manifest
       }
     end
 
@@ -49,10 +51,18 @@ module Wax
       @full_image = derivatives.first[1]['full_image']
     end
 
+    def iiif_manifest=(iiif_manifest)
+      @iiif_manifest = iiif_manifest
+    end
+
     def clear_simple_derivatives
       @derivatives.to_h.delete 'simple'
       @thumbnail  = nil
       @full_image = nil
+    end
+
+    def clear_iiif_derivatives
+      @derivatives.to_h.delete 'iiif'
     end
 
     def clear_assets

@@ -38,5 +38,16 @@ module Wax
       string = str.to_s
       string.length > max ? "#{string[0...max]}..." : string
     end
+
+    def self.add_yaml_front_matter_to_file(file)
+      front_matter = "---\n\n---\n"
+      filestring = File.read file
+      return if filestring.start_with? front_matter
+
+      File.open(file, 'w') do |f|
+        f.puts front_matter
+        f.puts filestring
+      end
+    end
   end
 end
