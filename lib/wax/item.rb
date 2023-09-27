@@ -4,7 +4,8 @@ require 'forwardable'
 
 module Wax
   class Item
-    attr_reader :pid, :label, :order, :metadata, :assets, :derivatives, :thumbnail, :full_image, :iiif_manifest
+    attr_accessor :iiif_manifest
+    attr_reader :pid, :label, :order, :metadata, :assets, :derivatives, :thumbnail, :full_image
 
     def initialize(pid, opts)
       @pid            = pid
@@ -49,10 +50,6 @@ module Wax
       @derivatives.to_h['simple'] = derivatives
       @thumbnail = derivatives.first[1]['thumbnail']
       @full_image = derivatives.first[1]['full_image']
-    end
-
-    def iiif_manifest=(iiif_manifest)
-      @iiif_manifest = iiif_manifest
     end
 
     def clear_simple_derivatives

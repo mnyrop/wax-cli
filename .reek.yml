@@ -1,7 +1,9 @@
 ---
 detectors:
+  Attribute:
+    exclude: [iiif_manifest]
   TooManyStatements:
-      max_statements: 12
+    max_statements: 11
   IrresponsibleModule: # Should be able to remove later!!!
     enabled: false
   FeatureEnvy:
@@ -18,4 +20,4 @@ detectors:
   InstanceVariableAssumption: # Should fix
     enabled: false
   NestedIterators:
-    ignore_iterators: [find, tap]
+    max_allowed_nesting: 2
