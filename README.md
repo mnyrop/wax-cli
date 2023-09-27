@@ -1,8 +1,8 @@
-# wax_cli
-[![Test](https://github.com/mnyrop/wax_cli/actions/workflows/main.yml/badge.svg)](https://github.com/mnyrop/wax_cli/actions/workflows/main.yml) 
-[![License](https://img.shields.io/github/license/mnyrop/wax_cli.svg?color=c6a1e0)](LICENSE.txt)
+# wax-cli
+[![Test](https://github.com/mnyrop/wax-cli/actions/workflows/main.yml/badge.svg)](https://github.com/mnyrop/wax-cli/actions/workflows/main.yml) 
+[![License](https://img.shields.io/github/license/mnyrop/wax-cli.svg?color=c6a1e0)](LICENSE.txt)
 
-Gem-packaged CLI tool for building collection derivatives & data files for minicomp/wax sites. Heir apparent to [wax_tasks](https://github.com/minicomp/wax_tasks).
+Gem-packaged CLI tool for building collection derivatives & data files for minicomp/wax sites. Heir apparent to [wax tasks](https://github.com/minicomp/wax_tasks).
 
 ## Installation
 
@@ -12,7 +12,7 @@ Gem-packaged CLI tool for building collection derivatives & data files for minic
 - Ruby with Bundler
 
 ### Steps
-- Add `gem 'wax_cli'` to your project's `Gemfile`
+- Add `gem 'wax-cli'` to your project's `Gemfile`
 - Run `bundle install`
 
 ## Usage

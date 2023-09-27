@@ -3,7 +3,7 @@
 require_relative 'lib/wax/version'
 
 Gem::Specification.new do |spec|
-  spec.name = 'wax_cli'
+  spec.name = 'wax-cli'
   spec.version = Wax::VERSION
   spec.authors = ['marii nyrop']
   spec.email = ['marii@nyu.edu']
@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 3.1'
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/mnyrop/wax_cli'
+  spec.metadata['source_code_uri'] = 'https://github.com/mnyrop/wax-cli'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
