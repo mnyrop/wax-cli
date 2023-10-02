@@ -26,9 +26,10 @@ module Wax
     def validate; end
 
     def update_wax_json
-      merged = load_wax_json.merge items_hash
+      merged  = load_wax_json.merge items_hash
+      path    = Utils::Path.absolute collection_config.wax_json_file
       print Utils::Print.checkmark, "Updating #{collection_config.wax_json_file}\n"
-      File.write Utils::Path.absolute(collection_config.wax_json_file), JSON.pretty_generate(merged)
+      File.open(path, 'w') { |file| file.write JSON.pretty_generate(merged) }
     end
 
     def load_wax_json
@@ -38,8 +39,8 @@ module Wax
 
     def overwrite_wax_json
       print Utils::Print.checkmark, "Overwriting #{collection_config.wax_json_file}\n"
-      file = Utils::Path.absolute collection_config.wax_json_file
-      File.write file, items_json
+      path = Utils::Path.absolute collection_config.wax_json_file
+      File.open(path, 'w') { |file| file.write items_json }
     end
 
     def items_json
