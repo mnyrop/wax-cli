@@ -25,7 +25,7 @@ module Wax
 
     def initialize(name, opts, project)
       @name             = name
-      @opts             = opts
+      @opts             = opts || {}
       @project          = project
       @build_strategies = infer_build_strategies
 
@@ -37,11 +37,11 @@ module Wax
       config.name             = @name
       config.source_dir       = @project.source
       config.data_dir         = Utils::Path.safe_join @project.data_dir, 'collections', @name
-      config.records_file     = Utils::Path.safe_join(config.data_dir, @opts.dig('data', 'records') || 'records.csv')
-      config.assets_dir       = Utils::Path.safe_join(config.data_dir, @opts.dig('data', 'assets')  || 'assets')
-      config.dictionary_file  = Utils::Path.safe_join(config.data_dir,
-                                                      @opts.dig('data', 'dictionary') || 'dictionary.yml')
-      config.wax_json_file    = Utils::Path.safe_join(config.data_dir, 'wax.json')
+      config.records_file     = @opts.dig('data', 'records')    || Utils::Path.safe_join(config.data_dir, 'records.csv')
+      config.assets_dir       = @opts.dig('data', 'assets')     || Utils::Path.safe_join(config.data_dir, 'assets')
+      config.dictionary_file  = @opts.dig('data',
+                                          'dictionary') || Utils::Path.safe_join(config.data_dir, 'dictionary.yml')
+      config.wax_json_file    = @opts.dig('state', 'file') || Utils::Path.safe_join(config.data_dir, 'wax.json')
       config.derivatives_dir  = Utils::Path.safe_join(@project.derivatives_dir, @name)
       config.pages_dir        = Utils::Path.safe_join(@project.collections_dir, "_#{@name}")
       config.build_opts       = @opts.fetch 'build', {}
