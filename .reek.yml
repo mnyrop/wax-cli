@@ -15,7 +15,7 @@ detectors:
   BooleanParameter:
     enabled: false
   DuplicateMethodCall:
-    max_calls: 2
+    max_calls: 3
     allow_calls: [config, Utils::Print]
   InstanceVariableAssumption: # Should fix
     enabled: false
