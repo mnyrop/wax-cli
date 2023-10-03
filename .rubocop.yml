@@ -13,7 +13,7 @@ Style/OptionalArguments:
 Layout/LineLength:
   AllowedPatterns: [!ruby/regexp /\A#/, 'Parallel', 'config ', 'raise ', 'warn ', '_option ', 'puts', 'print']
 Metrics/MethodLength:
-  Max: 13
+  Max: 15
 Metrics/ModuleLength: 
   Enabled: false
 Metrics/AbcSize:

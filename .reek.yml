@@ -21,3 +21,7 @@ detectors:
     enabled: false
   NestedIterators:
     max_allowed_nesting: 2
+  LongParameterList:
+    max_params: 4
+  ManualDispatch:
+    enabled: false

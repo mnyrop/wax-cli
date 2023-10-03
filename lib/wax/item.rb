@@ -49,10 +49,12 @@ module Wax
     end
 
     def simple_derivatives=(derivatives)
+      primary = derivatives.first[1] || {}
+
       @derivatives.to_h['simple'] = derivatives
-      @thumbnail = derivatives.first[1]['thumbnail']
-      @banner = derivatives.first[1]['banner']
-      @full_image = derivatives.first[1]['full_image']
+      @thumbnail  = primary['thumbnail']
+      @banner     = primary['banner']
+      @full_image = primary['full_image']
     end
 
     def clear_simple_derivatives

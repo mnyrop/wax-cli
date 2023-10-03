@@ -2,8 +2,8 @@
 
 class Hash
   def deep_compact
-    delete_if do |k, v|
-      (v.respond_to?(:empty?) ? v.empty? : !v) or v.instance_of?(Hash) && v.deep_compact.empty?
+    delete_if do |_k, value|
+      (value.respond_to?(:empty?) ? value.empty? : !value) or (value.instance_of?(Hash) && value.deep_compact.empty?)
     end
   end
 end

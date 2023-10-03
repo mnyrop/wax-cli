@@ -96,10 +96,14 @@ module Wax
         Utils::Image.new_variant(image, width).jpegsave target unless File.file? target
         [key, prune_source(target)]
       end
-      full_target = File.join dir, "full.jpg"
-      Utils::Image.full_variant(image, config.full_max).jpegsave full_target unless File.file? full_target
-      results['full_image'] = prune_source(full_target)
+      results['full_image'] = write_full_variant(image, dir)
       [num, results]
+    end
+
+    def write_full_variant(image, dir)
+      full_target = File.join dir, 'full.jpg'
+      Utils::Image.full_variant(image, config.full_max).jpegsave full_target unless File.file? full_target
+      prune_source(full_target)
     end
   end
 end

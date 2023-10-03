@@ -57,18 +57,22 @@ module Wax
       update_wax_json
     end
 
+    def iiif_asset_opts(pid, asset, label = nil, metadata = nil)
+      {
+        is_primary: asset[0].to_i.zero?,
+        label: label || pid,
+        metadata:,
+        path: asset[1],
+        manifest_id: pid,
+        id: "#{pid}_#{asset[0]}"
+      }.compact
+    end
+
     def iiif_image_records
       data = []
       @items.each do |item|
-        item.assets.each do |key, path|
-          opts = {
-            is_primary: key.to_i.zero?,
-            label: item.label || item.pid,
-            metadata: item.metadata,
-            path:,
-            manifest_id: item.pid,
-            id: "#{item.pid}_#{key}"
-          }
+        item.assets.each do |asset|
+          opts = iiif_asset_opts(item.pid, asset, item.label, item.metadata)
           data << WaxIiif::ImageRecord.new(opts)
         end
       end

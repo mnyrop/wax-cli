@@ -29,7 +29,7 @@ module Wax
       merged  = load_wax_json.merge items_hash
       path    = Utils::Path.absolute collection_config.wax_json_file
       print Utils::Print.checkmark, "Updating #{collection_config.wax_json_file}\n"
-      File.open(path, 'w') { |file| file.write JSON.pretty_generate(merged) }
+      File.write(path, JSON.pretty_generate(merged))
     end
 
     def load_wax_json
@@ -40,7 +40,7 @@ module Wax
     def overwrite_wax_json
       print Utils::Print.checkmark, "Overwriting #{collection_config.wax_json_file}\n"
       path = Utils::Path.absolute collection_config.wax_json_file
-      File.open(path, 'w') { |file| file.write items_json }
+      File.write(path, items_json)
     end
 
     def items_json
