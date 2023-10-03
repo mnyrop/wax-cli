@@ -58,21 +58,20 @@ module Wax
     end
 
     def iiif_image_records
-      data = []
-      @items.each do |item|
-        item.assets.each do |key, path|
+      @items.map do |item|
+        metadata = item.metadata.map { |key, value| { 'label' => key, 'value' => value } }
+        item.assets.map do |key, path|
           opts = {
             is_primary: key.to_i.zero?,
             label: item.label || item.pid,
-            metadata: item.metadata,
+            metadata:,
             path:,
             manifest_id: item.pid,
             id: "#{item.pid}_#{key}"
           }.compact
-          data << WaxIiif::ImageRecord.new(opts)
+          WaxIiif::ImageRecord.new(opts)
         end
-      end
-      data
+      end.flatten
     end
 
     def clobber(items, force: false)
