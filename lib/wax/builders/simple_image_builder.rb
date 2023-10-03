@@ -11,13 +11,15 @@ module Wax
   class SimpleImageBuilder < Builder
     include Dry::Configurable
 
-    setting :variants,         reader: true
-    setting :derivatives_dir,  reader: true
+    setting :full_max,          reader: true
+    setting :variants,          reader: true
+    setting :derivatives_dir,   reader: true
 
     VALID_FORMATS = %w[png jpg jpeg tiff tif jp2 gif].freeze
 
     def load_configuration
       config.variants         = custom_variants
+      config.full_max         = opts.fetch 'full_max', 1400
       config.derivatives_dir  = Utils::Path.safe_join collection_config.derivatives_dir, 'simple'
     end
 
@@ -57,7 +59,7 @@ module Wax
 
     def default_variants
       {
-        'full_image' => 1140,
+        'banner' => 1140,
         'thumbnail' => 400
       }
     end
@@ -94,6 +96,9 @@ module Wax
         Utils::Image.new_variant(image, width).jpegsave target unless File.file? target
         [key, prune_source(target)]
       end
+      full_target = File.join dir, "full.jpg"
+      Utils::Image.full_variant(image, config.full_max).jpegsave full_target unless File.file? full_target
+      results['full_image'] = prune_source(full_target)
       [num, results]
     end
   end

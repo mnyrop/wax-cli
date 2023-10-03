@@ -5,7 +5,7 @@ require 'forwardable'
 module Wax
   class Item
     attr_accessor :iiif_manifest
-    attr_reader :pid, :label, :order, :metadata, :assets, :derivatives, :thumbnail, :full_image
+    attr_reader :pid, :label, :order, :metadata, :assets, :derivatives, :thumbnail, :banner, :full_image
 
     def initialize(pid, opts)
       @pid            = pid
@@ -15,6 +15,7 @@ module Wax
       @assets         = opts.fetch 'assets',        {}
       @derivatives    = opts.fetch 'derivatives',   {}
       @thumbnail      = opts.fetch 'thumbnail',     ''
+      @banner         = opts.fetch 'banner',        ''
       @full_image     = opts.fetch 'full_image',    ''
       @iiif_manifest  = ''
     end
@@ -25,6 +26,7 @@ module Wax
         'label' => label,
         'order' => order,
         'thumbnail' => thumbnail,
+        'banner' => banner,
         'full_image' => full_image,
         'is_paged' => paged?,
         'metadata' => metadata,
@@ -43,18 +45,20 @@ module Wax
     end
 
     def compact_hash
-      Utils.compact_hash to_h
+      to_h.deep_compact
     end
 
     def simple_derivatives=(derivatives)
       @derivatives.to_h['simple'] = derivatives
       @thumbnail = derivatives.first[1]['thumbnail']
+      @banner = derivatives.first[1]['banner']
       @full_image = derivatives.first[1]['full_image']
     end
 
     def clear_simple_derivatives
       @derivatives.to_h.delete 'simple'
       @thumbnail  = nil
+      @banner     = nil
       @full_image = nil
     end
 

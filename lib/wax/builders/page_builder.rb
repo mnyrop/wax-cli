@@ -36,8 +36,7 @@ module Wax
     def page_hash(item)
       page_hash = item.to_h
       page_hash['layout'] = config.layout if config.layout
-      # page_hash['derivatives'] = page_hash.delete('derivatives')
-      Utils.compact_hash page_hash.except 'assets'
+      page_hash.except('assets').deep_compact
     end
 
     def clobber(_items, _force)

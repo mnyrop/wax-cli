@@ -63,6 +63,8 @@ module Wax
         item.assets.each do |key, path|
           opts = {
             is_primary: key.to_i.zero?,
+            label: item.label || item.pid,
+            metadata: item.metadata,
             path:,
             manifest_id: item.pid,
             id: "#{item.pid}_#{key}"
